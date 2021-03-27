@@ -16,9 +16,6 @@ helpTxt = '''
     Saved file will be named after the (first) Strongs Number entered, i. e. "H25.csv."
 '''
 
-#sNumList = ['[H7585]', '[H6900]', '[H6913]', '[H7845]', '[G86]', '[G3419]'] 
-#sNumList = ['[G25]',] 
-
 
 def parseArgs(argv):
     
@@ -30,14 +27,14 @@ def parseArgs(argv):
 
     try:
         opts, args = getopt.getopt(argv, options, long_options)
-        print(opts, 'opts', args, 'args')
+        #print(opts, 'opts', args, 'args')
         if ',' in args:
             argsList = args.split(',')
             argsList = ['[%s]' % a for a in argsList]
         else:
             argsList = ['[%s]' % args]
         
-        print(argsList, 'argList')
+        #print(argsList, 'argList')
         generate(argsList)
     except getopt.GetoptError:
         print ('makeCSV.py <strongs number(s)>, -ho  [outputpath]')
@@ -117,26 +114,29 @@ def generate(sNumList):
             ln = '%s\t%s' % (row[1], vsTxt)
             bibList.append(ln)
 
-    print(csv[1])
+    #print(csv[1])
 
 
     csvout.write('\n'.join(csv))
     csvout.close()
+    
+    print('CSV Generated')
 
 
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        parseArgs(sys.argv[1:])
+        parseArgs(sys.argv[1:][0])
     else:
         print('Enter at least one Strong\'s Number (i.e. G25) or -h for help: ')
         
         ip = input()
-        if ip == '-h':
-            print (helpTxt)
-        elif not input():
+        if not ip or ip == '-h':
             print(helpTxt)
-            sys.exit(2)
+            sys.exit(0)
         else:
             parseArgs(ip)
+            
+            
+            
